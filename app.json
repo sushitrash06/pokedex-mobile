@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "164c07bd-745f-48ab-b8f5-2e4470e16b31"
+      }
+    },
+    "owner": "azkaxism"
   }
 }

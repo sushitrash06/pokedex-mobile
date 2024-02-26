@@ -9,10 +9,23 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/native": "^6.1.12",
+    "@react-navigation/native-stack": "^6.9.20",
+    "@tanstack/react-query": "^4.36.1",
+    "@types/react-dom": "^18.2.19",
+    "@types/react-navigation": "^3.4.0",
+    "@zodios/core": "^10.9.6",
+    "@zodios/react": "^10.4.5",
+    "axios": "^1.6.7",
     "expo": "~50.0.7",
     "expo-status-bar": "~1.11.1",
-    "react": "18.2.0",
-    "react-native": "0.73.4"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.0.1",
+    "react-native": "0.73.4",
+    "react-navigation": "^5.0.0",
+    "react-query": "^3.39.3",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
