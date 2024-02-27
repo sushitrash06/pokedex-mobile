@@ -10,10 +10,9 @@ const PokedexItem: React.FunctionComponent<{ item?: Pokemon }> = ({
   const [imagePokemon , setImage] = React.useState("")
   React.useEffect(()=>{
     const pokemonUrlImage = item?.url.split('/')[item?.url.split('/').length - 2];
-    const imageUrl = `https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${pokemonUrlImage}.png?raw=true`;
+    const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonUrlImage}.png`;
     setImage(imageUrl)
   },[imagePokemon,item?.url])
-
   return (
     <View>
         <View style={styles.card}>

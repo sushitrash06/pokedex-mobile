@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Animated, ScrollView, StyleSheet } from "react-native";
+import { Animated, ScrollView, StyleSheet, View } from "react-native";
 import ListPokemon from "../../Component/Organism/ListPokemon";
 import InputComponent from "../../Component/Atoms/Input";
 import { useForm, SubmitHandler } from "react-hook-form";
 import HeaderMain from "../../Component/Molecules/Header";
+import HeadHomePage from "../../Component/Organism/HeadHomePage";
 
 interface FormValues {
   search: string;
@@ -37,16 +38,21 @@ const HomePage: React.FunctionComponent<{ navigation: any }> = ({
           },
         ]}
       >
-        <HeaderMain title="Pokedex" onPress={() => navigation.navigate("Favorite")} />
+        <HeaderMain
+          title="Pokedex"
+          onPress={() => navigation.navigate("Favorite")}
+        />
       </Animated.View>
       <Animated.ScrollView
+        style={styles.container}
         onScroll={handleScroll}
         scrollEventThrottle={16}
-        stickyHeaderIndices={[0]} // Ini akan membuat header tetap menempel di bagian atas layar
       >
+        <HeadHomePage />
         <InputComponent
+          style={styles.input}
           control={control}
-          name="search"
+          name="search by name ..."
           placeholder="Search"
           onSubmitEditing={handleSubmit(onSubmit)}
         />
@@ -57,6 +63,15 @@ const HomePage: React.FunctionComponent<{ navigation: any }> = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#d5e4e9",
+  },
+  input: {
+    margin: 20,
+    padding: 10,
+    backgroundColor: "#c5d2d6",
+    borderRadius: 25,
+  },
   header: {
     position: "absolute",
     top: 0,
