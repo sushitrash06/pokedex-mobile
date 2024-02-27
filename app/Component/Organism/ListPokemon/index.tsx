@@ -1,11 +1,17 @@
 import * as React from "react";
-import { ActivityIndicator, FlatList, Text, View } from "react-native";
-import PokedexItem from "../../Molecules/ItemsList";
+import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
 import { fetchPokemonList } from "../../../api";
 import { useInfiniteQuery, useQuery } from "react-query";
+import PokedexItem from "../../Molecules/PokedexItem";
 
-const ListPokemon: React.FunctionComponent<{ navigation: any }> = ({
+interface PropsList {
+  navigation: any;
+  search: string;
+}
+
+const ListPokemon: React.FunctionComponent<PropsList> = ({
   navigation,
+  search
 }) => {
   const {
     data,
@@ -25,6 +31,13 @@ const ListPokemon: React.FunctionComponent<{ navigation: any }> = ({
       },
     }
   );
+  const filteredData = React.useMemo(() => {
+    if (!data || !data.pages) return []; // Ensure data and data.pages are defined
+    if (!search) return data.pages.flatMap(page => page); // Use flatMap to flatten the array of arrays
+    return data.pages.flatMap(page => page.filter((pokemon: any) => pokemon.name.includes(search.toLowerCase())));
+  }, [data, search]);
+  
+
   const handleLoadMore = React.useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -35,19 +48,40 @@ const ListPokemon: React.FunctionComponent<{ navigation: any }> = ({
   if (isError) return <Text>Error fetching data</Text>;
 
   return (
-    <View>
-      <FlatList
-          data={data?.pages.flat()}
-         keyExtractor={(item) => item.name}
-         renderItem={({ item }) => (
-          <PokedexItem item={item}/>
-         )}
-         onEndReached={handleLoadMore}
-      onEndReachedThreshold={0.1}
-      ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
-      />
-    </View>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      onScroll={({ nativeEvent }) => {
+        if (
+          nativeEvent.contentOffset.y >=
+          nativeEvent.contentSize.height -
+          nativeEvent.layoutMeasurement.height * 2
+        ) {
+          handleLoadMore();
+        }
+      }}
+      scrollEventThrottle={400}
+    >
+      {filteredData.map((pokemon: any, index:number) => (
+        <View key={index} style={styles.rowContainer}>
+          <PokedexItem item={pokemon} />
+        </View>
+      ))}
+      {isFetchingNextPage && <ActivityIndicator />}
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    padding: 16,
+  },
+  rowContainer: {
+    width: '48%', // Adjust the width to fit two columns with some space between them
+    marginBottom: 16, // Add some margin to create space between rows
+  }
+});
 
 export default ListPokemon;
