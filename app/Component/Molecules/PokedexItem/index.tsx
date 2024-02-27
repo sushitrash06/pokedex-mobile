@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    color:"#2e3057"
   },
 });
 

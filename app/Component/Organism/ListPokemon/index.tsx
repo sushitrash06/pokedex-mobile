@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ActivityIndicator, FlatList, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, View } from "react-native";
 import { fetchPokemonList } from "../../../api";
 import { useInfiniteQuery, useQuery } from "react-query";
 import PokedexItem from "../../Molecules/PokedexItem";
@@ -28,7 +28,18 @@ const ListPokemon: React.FunctionComponent<PropsList> = ({
           <PokedexItem item={pokemon} />
         </View>
       ))}
-      {isLoading && <ActivityIndicator />}
+      <View style={styles.imageContainer}>
+      {isLoading &&
+      (
+        <Image 
+        source={require('../../../../assets/pikachu-running.gif')}
+        resizeMode="contain"
+        style={styles.image}
+        />
+      ) 
+        }
+      </View>
+     
     </View>
   );
 };
@@ -41,9 +52,17 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   rowContainer: {
-    width: '48%', // Adjust the width to fit two columns with some space between them
-    marginBottom: 16, // Add some margin to create space between rows
-  }
+    marginBottom: 16,
+  },
+  imageContainer: {
+    width: '100%',
+    alignItems: 'center', 
+  },
+  image: {
+    width: 100, 
+    height: 100,
+  },
 });
+
 
 export default ListPokemon;
