@@ -1,9 +1,7 @@
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-interface Pokemon {
-  name: string;
-  url: string;
-}
+import { Pokemon } from "../../../types";
+
 const PokedexItem: React.FunctionComponent<{ item?: Pokemon }> = ({
   item,
 }) => {
@@ -13,6 +11,7 @@ const PokedexItem: React.FunctionComponent<{ item?: Pokemon }> = ({
     const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonUrlImage}.png`;
     setImage(imageUrl)
   },[imagePokemon,item?.url])
+
   return (
     <View>
         <View style={styles.card}>
@@ -33,8 +32,7 @@ const styles = StyleSheet.create({
     height: 180,
     alignItems:'center',
     borderRadius: 15,
-    borderWidth: 0.5,
-    borderColor: '#35374B'
+    backgroundColor: '#8EACCD'
   },
   image: {
     width: 100,

@@ -9,13 +9,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5, // Adjust shadow elevation as needed
-    marginBottom: 16, // Add margin for spacing between cards
-  },
+    elevation: 5,
+    marginBottom: 16
+   },
   cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 8, // Add margin below title
+    marginBottom: 8
   },
 });
 

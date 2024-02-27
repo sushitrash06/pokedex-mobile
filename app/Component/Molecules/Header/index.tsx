@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#344955",
     height: 80,
     flexDirection: "row",
-    justifyContent: "center", // Pusatkan elemen secara horizontal
-    alignItems: "center", // Pusatkan elemen secara vertikal
+    justifyContent: "center",
+    alignItems: "center",
   },
   headerText: {
     color: "#c5d4c9",

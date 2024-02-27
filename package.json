@@ -1,11 +1,10 @@
 {
   "name": "pokemon-app",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
@@ -20,18 +19,22 @@
     "axios": "^1.6.7",
     "expo": "^50.0.8",
     "expo-status-bar": "~1.11.1",
-    "react": "^18.2.0",
+    "expo-system-ui": "^2.9.3",
+    "react": "18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",
     "react-icons": "^5.0.1",
     "react-native": "0.73.4",
     "react-native-collapsible-header-views": "^1.1.2",
-    "react-native-gesture-handler": "^2.15.0",
+    "react-native-color-grabber": "^0.0.3",
+    "react-native-gesture-handler": "~2.14.0",
+    "react-native-image-colors": "^2.4.0",
     "react-native-redash": "^14.2.4",
     "react-native-web": "~0.19.6",
     "react-navigation": "^5.0.0",
     "react-query": "^3.39.3",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "expo-dev-client": "~3.3.9"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
