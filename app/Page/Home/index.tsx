@@ -115,6 +115,7 @@ const HomePage: React.FunctionComponent<{ navigation: any }> = ({
           <Loading />
         ) : (
           <ListPokemon
+            type="list"
             navigation={navigation}
             isLoading={isLoading}
             dataList={

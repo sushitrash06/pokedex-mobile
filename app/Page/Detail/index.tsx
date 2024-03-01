@@ -6,7 +6,6 @@ import { getIdPokemon, getPokemonUrlImage } from "../../utils";
 import PokemonDetail from "../../Component/Organism/Pokemon";
 import Sprite from "../../Component/Organism/Sprite";
 import Abilities from "../../Component/Organism/Abilites";
-import HeaderMain from "../../Component/Molecules/Header";
 
 const DetailPage: React.FunctionComponent<{ route: any, navigation:any }> = ({ route, navigation }) => {
   const { url } = route.params;
@@ -17,8 +16,7 @@ const DetailPage: React.FunctionComponent<{ route: any, navigation:any }> = ({ r
   const { data:dataPokemonSpecies } = useQuery("PokemonSpecies", async () => {
     return await fetchPokemonSpecies(parseInt(id));
   });
-  const headerHeight = 100;
-  const [headerVisible, setHeaderVisible] = React.useState(false);
+;
   const isString = (value: any) => typeof value === "string";
   const getStringValues = (obj: any) => {
     let stringValues = [];
@@ -35,16 +33,7 @@ const DetailPage: React.FunctionComponent<{ route: any, navigation:any }> = ({ r
   const stringValuesArray = getStringValues(data && data?.sprites);
   return (
       <ScrollView
-      style={styles.container}
-      onScroll={({ nativeEvent }) => {
-        const offsetY = nativeEvent.contentOffset.y;
-        if (offsetY > 100) {
-          setHeaderVisible(true);
-        } else {
-          setHeaderVisible(false);
-        }
-      }}
-      scrollEventThrottle={50}>
+      style={styles.container}>
         <View>
           <PokemonDetail
             color={dataPokemonSpecies?.color?.name}

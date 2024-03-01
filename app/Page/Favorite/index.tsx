@@ -10,7 +10,7 @@ const FavoritePage: React.FunctionComponent<{navigation:any}> = ({navigation}) =
   console.log(favorites)
   return (
     <View>
-      <ListPokemon dataList={favorites} navigation={navigation}/>
+      <ListPokemon dataList={favorites} navigation={navigation} type='fav'/>
     </View>
   );
 };

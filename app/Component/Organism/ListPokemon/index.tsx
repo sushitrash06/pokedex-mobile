@@ -11,18 +11,20 @@ interface PropsList {
   dataList: Pokemon[];
   isLoading?: boolean;
   navigation: any;
+  type: 'fav' | 'list'
 }
 
 const ListPokemon: React.FunctionComponent<PropsList> = ({
   dataList,
   isLoading = false,
   navigation,
+  type
 }) => {
   return (
     <View style={styles.container}>
       {dataList.map((pokemon: Pokemon, index: number) => (
         <View key={index} style={styles.rowContainer}>
-          <PokedexItem name={pokemon.name} url={pokemon.url} navigation={navigation}
+          <PokedexItem name={pokemon.name} url={pokemon.url} navigation={navigation} type={type}
           />
         </View>
       ))}
