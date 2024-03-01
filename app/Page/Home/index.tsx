@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import {  Animated, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Animated, StyleSheet } from "react-native";
 import ListPokemon from "../../Component/Organism/ListPokemon";
 import InputComponent from "../../Component/Atoms/Input";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -7,6 +7,9 @@ import HeaderMain from "../../Component/Molecules/Header";
 import HeadHomePage from "../../Component/Organism/HeadHomePage";
 import { useInfiniteQuery } from "react-query";
 import { fetchPokemonList } from "../../api";
+import Loading from "../../Component/Atoms/Loading";
+import { fetchPokemonSearch } from "../../utils";
+import { Pokemon } from "../../types";
 
 interface FormValues {
   search: string;
@@ -17,40 +20,48 @@ const HomePage: React.FunctionComponent<{ navigation: any }> = ({
 }) => {
   const [keywordSearch, setKeywordSearch] = useState("");
   const { control, handleSubmit } = useForm<FormValues>();
+  const [loading, setLoading] = useState<Boolean>(false);
+  const [searchResult, setSearchResult] = useState<Pokemon[]>([]);
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    setKeywordSearch(data.search);
-  };
   const [headerVisible, setHeaderVisible] = useState(false);
   const headerHeight = 100;
-  const {
-    data,
-    isLoading,
-    isError,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-  } = useInfiniteQuery(
-    "pokemonList",
-    async ({ pageParam = 0 }) => {
-      return await fetchPokemonList(pageParam * 50, 50);
-    },
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        return lastPage.length === 50 ? allPages.length : false;
+  const { data, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage } =
+    useInfiniteQuery(
+      "pokemonList",
+      async ({ pageParam = 0 }) => {
+        return await fetchPokemonList(pageParam * 50, 50);
       },
-    }
-  );
-  const filteredData = React.useMemo(() => {
-    if (!data || !data.pages) return [];
-    if (!keywordSearch) return data.pages.flatMap((page) => page);
-    return data.pages.flatMap((page) =>
-      page.filter((pokemon: any) =>
-        pokemon.name.includes(keywordSearch.toLowerCase())
-      )
+      {
+        getNextPageParam: (lastPage, allPages) => {
+          return lastPage.length === 50 ? allPages.length : false;
+        },
+      }
     );
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!data || !data.pages) return;
+      if (!keywordSearch) return;
+      try {
+        const filteredResult = await fetchPokemonSearch(keywordSearch);
+        setLoading(true);
+        setTimeout(() => {
+          setSearchResult(filteredResult)
+          setLoading(false);
+        }, 2000)
+      } catch (error) {
+        console.log(error, 'Error while fetching filtered data');
+      }
+    };
+    fetchData();
   }, [data, keywordSearch]);
 
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    setKeywordSearch(data.search);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
   const handleLoadMore = React.useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -68,6 +79,7 @@ const HomePage: React.FunctionComponent<{ navigation: any }> = ({
         ]}
       >
         <HeaderMain
+          navigation={navigation}
           title="Pokedex"
           onPress={() => navigation.navigate("Favorite")}
         />
@@ -76,7 +88,7 @@ const HomePage: React.FunctionComponent<{ navigation: any }> = ({
         style={styles.container}
         onScroll={({ nativeEvent }) => {
           const offsetY = nativeEvent.contentOffset.y;
-          if (offsetY > 400) {
+          if (offsetY > 300) {
             setHeaderVisible(true);
           } else {
             setHeaderVisible(false);
@@ -89,7 +101,7 @@ const HomePage: React.FunctionComponent<{ navigation: any }> = ({
             handleLoadMore();
           }
         }}
-        scrollEventThrottle={400}
+        scrollEventThrottle={200}
       >
         <HeadHomePage onPress={() => navigation.navigate("Favorite")} />
         <InputComponent
@@ -99,7 +111,23 @@ const HomePage: React.FunctionComponent<{ navigation: any }> = ({
           placeholder="Search by name ..."
           onSubmitEditing={handleSubmit(onSubmit)}
         />
-        <ListPokemon isLoading={isLoading} dataList={filteredData} navigation={navigation} />
+        {loading ? (
+          <Loading />
+        ) : (
+          <ListPokemon
+            navigation={navigation}
+            isLoading={isLoading}
+            dataList={
+              !keywordSearch
+                ? data
+                  ? data.pages.flat()
+                  : []
+                : keywordSearch
+                ? searchResult
+                : []
+            } // Menggunakan data?.pages untuk memastikan data tidak null
+          />
+        )}
       </Animated.ScrollView>
     </Animated.View>
   );
@@ -107,12 +135,12 @@ const HomePage: React.FunctionComponent<{ navigation: any }> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#d5e4e9",
+    backgroundColor: "#ece9d7",
   },
   input: {
     margin: 20,
     padding: 10,
-    backgroundColor: "#c5d2d6",
+    backgroundColor: "#c6d598",
     borderRadius: 25,
   },
   header: {

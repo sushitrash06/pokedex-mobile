@@ -1,21 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  cardBox: {
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    marginBottom: 16
-   },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8
+  card: {
+    width: 150,
+    height: 180,
+    alignItems: "center",
+    borderRadius: 15,
+    backgroundColor: "#b53336",
   },
 });
 

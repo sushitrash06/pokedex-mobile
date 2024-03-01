@@ -1,51 +1,53 @@
-import * as React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import { Pokemon } from "../../../types";
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { getPokemonUrlImage } from "../../../utils";
+import CardBox from "../../Atoms/Card";
 
-const PokedexItem: React.FunctionComponent<{ item?: Pokemon }> = ({
-  item,
-}) => {
-  const [imagePokemon , setImage] = React.useState("")
-  React.useEffect(()=>{
-    const pokemonUrlImage = item?.url.split('/')[item?.url.split('/').length - 2];
-    const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonUrlImage}.png`;
-    setImage(imageUrl)
-  },[imagePokemon,item?.url])
+interface PokedexItemProps {
+  name: string;
+  url: string;
+  navigation: any;
+}
+
+const PokedexItem: React.FunctionComponent<PokedexItemProps> = ({ name, url, navigation }) => {
+  const [imagePokemon, setImage] = React.useState("");
+
+
+  React.useEffect(() => {
+    const pokemonUrlImage = getPokemonUrlImage(url)
+    setImage(pokemonUrlImage);
+  }, [imagePokemon, url]);
+
+  const navigateToDetailPage = () => {
+    navigation.navigate("DetailPage", { url:url }); // Explicitly annotate the type of the parameter
+  };
 
   return (
-    <View>
-        <View style={styles.card}>
-          <Image
-             style={styles.image}
-             source={{ uri: imagePokemon }}
-             resizeMode="contain"
-          />
-      <Text style={styles.text}>{item?.name}</Text>
-    </View>
-    </View>
+    <TouchableOpacity onPress={navigateToDetailPage}>
+      <CardBox>
+        <Image
+          style={styles.image}
+          source={imagePokemon ? { uri: imagePokemon } : require("../../../../assets/pokeBall.png")}
+          resizeMode="contain"
+        />
+        <Text style={styles.text}>{name}</Text>
+      </CardBox>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    width: 150,
-    height: 180,
-    alignItems:'center',
-    borderRadius: 15,
-    backgroundColor: '#8EACCD'
-  },
   image: {
     width: 100,
     height: 130,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   text: {
     fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color:"#2e3057"
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#ece9d7",
   },
 });
-
 
 export default PokedexItem;

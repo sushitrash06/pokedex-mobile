@@ -6,6 +6,8 @@ import ButtonComponent from "./app/Component/Atoms/Button";
 import { MaterialIcons } from "@expo/vector-icons";
 import FavoritePage from "./app/Page/Favorite";
 import { QueryClient, QueryClientProvider } from "react-query";
+import DetailPage from "./app/Page/Detail";
+import { MMKV } from "react-native-mmkv";
 
 interface AppNavigatorParams {
   initialRouteName: string;
@@ -18,18 +20,9 @@ const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+<QueryClientProvider client={queryClient}>
       <NavigationContainer>
-        <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#344955',
-          },
-          headerTitleStyle: {
-            color: '#c5d4c9', // Change title color
-          },
-        }}
-        >
+        <Stack.Navigator>
           <Stack.Screen
             name="Home"
             component={HomePage}
@@ -60,6 +53,48 @@ export default function App() {
                   onPress={() => navigation.goBack()}
                 />
               ),
+            })}
+          />
+          <Stack.Screen
+            name="DetailPage"    
+            component={DetailPage}
+            options={({ navigation }) => ({
+              headerTransparent: true,
+              headerTitle: "Pokemon",
+              headerTintColor:"#474640",
+              headerTitleAlign: "center",
+              headerLeft: () => (
+                <ButtonComponent
+                  type="transparent"
+                  Icon={
+                    <MaterialIcons
+                      name="keyboard-arrow-left"
+                      size={24}
+                      style={{
+                        marginTop: -15,
+                        color: "#474640"
+                      }}
+                    />
+                  }
+                  onPress={() => navigation.goBack()}
+                />
+              ),
+            headerRight: () => (
+              <ButtonComponent
+                type="transparent"
+                Icon={
+                  <MaterialIcons
+                    name="favorite-outline"
+                    size={24}
+                    style={{
+                      marginTop: -15,
+                      color: "#474640"
+                    }}
+                  />
+                }
+                onPress={() => navigation.navigate("Favorite")}
+              />
+            ),
             })}
           />
         </Stack.Navigator>

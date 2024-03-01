@@ -18,7 +18,7 @@ const HeadHomePage: React.FunctionComponent<IAppProps> = ({onPress}) => {
               size={24}
               style={{
                 marginTop: -15,
-                color: "#2e3057",
+                color: "#1265a8",
               }}
             />
           }
@@ -38,14 +38,14 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 50,
     fontWeight: '700',
-    color: '#2e3057',
+    color: '#1265a8',
     marginHorizontal: 20,
     marginTop: 25
   },
   textSub: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#9b9eb0',
+    color: '#8dab30',
     marginHorizontal: 20
   },
   
